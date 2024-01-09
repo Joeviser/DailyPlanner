@@ -24,6 +24,8 @@ function displayTime (){
 setInterval(displayTime,1000);
 
 
+
+
 // Set variables
  
     //Descriptions (<textarea>)
@@ -52,14 +54,19 @@ setInterval(displayTime,1000);
 
     var buttons = [button9, button10, button11, button12, button1, button2, button3, button4, button5];
 
-    var inputs = ['Hour:9am', 'Hour:10am', 'Hour:11am', 'Hour:12am', 'Hour:1pm', 'Hour:2pm', 'Hour:3pm', 'Hour:4pm', 'Hour:5pm']; 
+    var inputs = ['Hour: 9am', 'Hour: 10am', 'Hour: 11am', 'Hour: 12am', 'Hour: 1pm', 'Hour: 2pm', 'Hour: 3pm', 'Hour: 4pm', 'Hour: 5pm']; 
 
     // Persist events between refreshes of a page (Get Values from Local Storage)
     for (let i = 0; i < descriptions.length && inputs.length; i++) {
         descriptions[i].val(localStorage.getItem(inputs[i]));
     };
 
-
+//     function clear() {
+//         localStorage.clear();
+//         for (let i = 0; i < descriptions.length; i++) {
+//         descriptions[i].val('')
+//     }};
+// clear();
 
 // Save the event in local storage when the save button is clicked in that time block.
 
@@ -81,3 +88,27 @@ function store(){
 }
 store();
 
+
+// Color-code each time block based on past, present, and future when the time block is viewed.
+function colorCodeTime() { 
+    //get the current time 
+    const timeNow=dayjs().format("HH");
+    
+    for (let i = 0; i < descriptions.length; i++) {
+        if (parseInt(descriptions[i].attr('data-hour')) < timeNow) {
+            descriptions[i].removeClass('past present future');
+            descriptions[i].addClass('past');
+        } 
+        else {
+                if (parseInt(descriptions[i].attr('data-hour')) > timeNow) {
+                    descriptions[i].removeClass('past present future');
+                    descriptions[i].addClass('future');
+                }
+                 else {
+                        descriptions[i].removeClass('past present future');
+                        descriptions[i].addClass('present');
+                 }
+        }
+    }
+}
+colorCodeTime();
